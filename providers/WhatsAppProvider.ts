@@ -36,7 +36,7 @@ export default class WhatsAppProvider {
     const token = Env.get('TOKEN')
     const apiPhoneNumber = Env.get('API_PHONE_NUMBER')
     try {
-      const response = await axios.post(
+      await axios.post(
         `https://graph.facebook.com/v13.0/${apiPhoneNumber}/messages?access_token=${token}`,
         {
           headers: {

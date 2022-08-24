@@ -1,5 +1,4 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Database from '@ioc:Adonis/Lucid/Database'
 import Calendar from 'App/Models/Calendar'
 import axios from 'axios'
 import { DateTime } from 'luxon'
