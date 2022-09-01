@@ -7,6 +7,7 @@
 
 import Env from '@ioc:Adonis/Core/Env'
 import { DatabaseConfig } from '@ioc:Adonis/Lucid/Database'
+import fs from 'fs'
 
 const databaseConfig: DatabaseConfig = {
   /*
@@ -41,6 +42,7 @@ const databaseConfig: DatabaseConfig = {
         user: Env.get('PG_USER'),
         password: Env.get('PG_PASSWORD', ''),
         database: Env.get('PG_DB_NAME'),
+        ssl: null,
       },
       migrations: {
         naturalSort: true,
@@ -52,6 +54,12 @@ const databaseConfig: DatabaseConfig = {
       },
     },
   },
+}
+
+if (Env.get('NODE_ENV') === 'production' && databaseConfig.connections.pg.connection) {
+  databaseConfig.connections.pg.connection.ssl = {
+    ca: fs.readFileSync(__dirname + '/pignews-api.pem'),
+  }
 }
 
 export default databaseConfig
