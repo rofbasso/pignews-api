@@ -1,17 +1,28 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Calendar from 'App/Models/Calendar'
 import axios from 'axios'
 import { DateTime } from 'luxon'
 import Env from '@ioc:Adonis/Core/Env'
 import { v4 as uuidV4 } from 'uuid'
 import moment from 'moment'
 import User from 'App/Models/User'
+import GamesServices from 'App/Services/GamesServices'
+import { GamesFactory } from 'App/Factories/GamesFactory/GamesFactory'
+import Games from 'App/Models/Games'
 
-export default class CalendarsController {
+export default class GamesController {
+  private readonly gamesService: GamesServices
+  constructor() {
+    this.gamesService = GamesFactory()
+  }
+
   public async index({ response }: HttpContextContract) {
-    const games = await Calendar.all()
+    try {
+      const games = await this.gamesService.index()
 
-    return response.status(200).json({ games })
+      return response.status(200).json({ games })
+    } catch (error) {
+      throw new Error(error.message)
+    }
   }
 
   public async create({}: HttpContextContract) {}
@@ -19,16 +30,16 @@ export default class CalendarsController {
   public async store({ request, response }: HttpContextContract) {
     const { mes, ano } = request.body()
     try {
-      const { data: calendario } = await axios.get(
+      const { data: gameio } = await axios.get(
         `https://apiverdao.palmeiras.com.br/wp-json/apiverdao/v1/jogos-mes/?mes=${mes}&ano=${ano}`,
         { headers: { 'Content-Type': 'application/json' } }
       )
 
       let retorno: any = []
 
-      if (calendario) {
-        for (const jogo of calendario.jogos) {
-          const gameAlreadyExists = await Calendar.findBy('apiverdao_id', `${jogo.id}`)
+      if (gameio) {
+        for (const jogo of gameio.jogos) {
+          const gameAlreadyExists = await Games.findBy('apiverdao_id', `${jogo.id}`)
           if (!gameAlreadyExists && jogo.data_jogo) {
             const [dia, mes] = jogo.data_jogo.split('/')
 
@@ -36,7 +47,7 @@ export default class CalendarsController {
 
             console.log(jogo)
 
-            const salvo = await Calendar.create({
+            const salvo = await Games.create({
               id: uuidV4(),
               apiverdao_id: jogo.id,
               date: DateTime.fromJSDate(data),
@@ -65,7 +76,7 @@ export default class CalendarsController {
     const apiPhoneNumber: string = Env.get('API_PHONE_NUMBER')
 
     try {
-      const gameExists = await Calendar.query()
+      const gameExists = await Games.query()
         .whereBetween('date', [`${date} 00:00:0000`, `${date} 24:00:0000`])
         .first()
 

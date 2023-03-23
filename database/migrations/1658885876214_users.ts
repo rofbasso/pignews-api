@@ -7,7 +7,8 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.string('name')
-      table.string('whatsapp').unique()
+      table.string('phone').unique()
+      table.string('club')
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
