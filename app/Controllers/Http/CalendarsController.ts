@@ -8,7 +8,11 @@ import moment from 'moment'
 import User from 'App/Models/User'
 
 export default class CalendarsController {
-  public async index({}: HttpContextContract) {}
+  public async index({ response }: HttpContextContract) {
+    const games = await Calendar.all()
+
+    return response.status(200).json({ games })
+  }
 
   public async create({}: HttpContextContract) {}
 
@@ -17,7 +21,6 @@ export default class CalendarsController {
     try {
       const { data: calendario } = await axios.get(
         `https://apiverdao.palmeiras.com.br/wp-json/apiverdao/v1/jogos-mes/?mes=${mes}&ano=${ano}`,
-        // 'https://apiverdao.palmeiras.com.br/wp-json/apiverdao/v1/jogos-mes/?mes=7&ano=2022',
         { headers: { 'Content-Type': 'application/json' } }
       )
 
