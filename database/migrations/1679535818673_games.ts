@@ -1,11 +1,9 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'calendars'
+  protected tableName = 'games'
 
   public async up() {
-    // this.db.raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";')
-
     this.schema.createTable(this.tableName, (table) => {
       table.uuid('id').primary()
       table.string('apiverdao_id')

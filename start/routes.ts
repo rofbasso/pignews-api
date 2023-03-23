@@ -25,6 +25,6 @@ Route.get('/', async () => {
   return 'Pig News API - Desenvolvido por Dev Basso'
 })
 
-Route.resource('calendar', 'CalendarsController').apiOnly()
+Route.resource('games', 'GamesController').apiOnly()
 Route.resource('users', 'UsersController').apiOnly()
-Route.post('send', 'CalendarsController.sendMessage')
+Route.post('send', 'GamesController.sendMessage')
