@@ -1,16 +1,29 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import User from 'App/Models/User'
+import { UsersFactory } from 'App/Factories/GamesFactory/UsersFactory'
+import User from 'App/Models/Users'
+import UsersServices from 'App/Services/UsersServices'
 
 export default class UsersController {
-  public async index({}: HttpContextContract) {}
+  private readonly usersServices: UsersServices
+  constructor() {
+    this.usersServices = UsersFactory()
+  }
+  public async index({ response }: HttpContextContract) {
+    try {
+      const users = await this.usersServices.index()
+      return response.status(200).json({ users })
+    } catch (error) {
+      throw new Error(error.message)
+    }
+  }
 
   public async create({}: HttpContextContract) {}
 
   public async store({ request, response }: HttpContextContract) {
     try {
-      const { name, whatsapp } = request.all()
+      const { name, club, phone } = request.all()
 
-      const user = await User.create({ name, whatsapp })
+      const user = await User.create({ name, club, phone })
 
       return response.status(200).json({ user })
     } catch (error) {
