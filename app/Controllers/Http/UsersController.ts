@@ -21,11 +21,9 @@ export default class UsersController {
 
   public async store({ request, response }: HttpContextContract) {
     try {
-      const { name, club, phone } = request.all()
+      const { name, club, phone } = request.body()
 
-      const user = await User.create({ name, club, phone })
-
-      return response.status(200).json({ user })
+      return response.status(200).json({ name, club, phone })
     } catch (error) {
       throw new Error(`${error.message}`)
     }
