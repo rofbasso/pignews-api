@@ -15,11 +15,20 @@ export default class UsersServices {
     const userAlreadyExist = await this.usersRepository.findByPhone(createUserDTO.phone)
 
     if (userAlreadyExist) {
-      console.log('Entrou')
       throw new Error('User already exists')
     }
 
     const user = await this.usersRepository.create(createUserDTO)
+
+    return user
+  }
+
+  public async show(id: number): Promise<Users> {
+    const user = await this.usersRepository.findById(id)
+
+    if (!user) {
+      throw new Error('User not found')
+    }
 
     return user
   }
