@@ -1,4 +1,4 @@
-import { CreateUserDTO } from 'App/DTO/UsersDTO'
+import { CreateUserDTO, UpdateUserDTO } from 'App/DTO/UsersDTO'
 import Users from 'App/Models/Users'
 import { UsersRepository } from 'App/Repositores/usersRepository/UsersRepository'
 
@@ -31,6 +31,18 @@ export default class UsersServices {
     }
 
     return user
+  }
+
+  public async update(updateUserDTO: UpdateUserDTO): Promise<Users> {
+    const user = await this.usersRepository.findById(updateUserDTO.id)
+
+    if (!user) {
+      throw new Error('User not found')
+    }
+
+    const updatedUser = await this.usersRepository.update(user, updateUserDTO)
+
+    return updatedUser
   }
 
   public async destroy(id: number): Promise<string> {
