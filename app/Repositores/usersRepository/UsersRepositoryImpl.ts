@@ -24,4 +24,8 @@ export default class UsersRepositoryImpl implements UsersRepository {
     const user = await Users.findBy('id', id)
     return user
   }
+
+  public async destroy(id: number): Promise<void> {
+    await Users.query().delete().where('id', id)
+  }
 }

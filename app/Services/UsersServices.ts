@@ -32,4 +32,16 @@ export default class UsersServices {
 
     return user
   }
+
+  public async destroy(id: number): Promise<string> {
+    const user = await this.usersRepository.findById(id)
+
+    if (!user) {
+      throw new Error('User not found')
+    }
+
+    await this.usersRepository.destroy(id)
+
+    return 'User deleted'
+  }
 }
