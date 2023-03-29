@@ -23,7 +23,9 @@ export default class UsersController {
     try {
       const { name, club, phone } = request.body()
 
-      return response.status(200).json({ name, club, phone })
+      const user = await this.usersServices.store({ name, club, phone })
+
+      return response.status(200).json({ user })
     } catch (error) {
       throw new Error(`${error.message}`)
     }

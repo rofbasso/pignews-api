@@ -11,7 +11,14 @@ export default class UsersServices {
     return users
   }
 
-  public async storte(createUserDTO: CreateUserDTO): Promise<Users> {
+  public async store(createUserDTO: CreateUserDTO): Promise<Users> {
+    const userAlreadyExist = await this.usersRepository.findByPhone(createUserDTO.phone)
+
+    if (userAlreadyExist) {
+      console.log('Entrou')
+      throw new Error('User already exists')
+    }
+
     const user = await this.usersRepository.create(createUserDTO)
 
     return user
