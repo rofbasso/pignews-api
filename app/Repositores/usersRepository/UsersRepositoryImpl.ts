@@ -19,4 +19,9 @@ export default class UsersRepositoryImpl implements UsersRepository {
     const user = await Users.findBy('phone', phone)
     return user
   }
+
+  public async findById(id: number): Promise<Users | null> {
+    const user = await Users.findBy('id', id)
+    return user
+  }
 }

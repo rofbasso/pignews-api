@@ -31,7 +31,17 @@ export default class UsersController {
     }
   }
 
-  public async show({}: HttpContextContract) {}
+  public async show({ request, response }: HttpContextContract) {
+    try {
+      const { id } = request.params()
+
+      const user = await this.usersServices.show(id)
+
+      return response.status(200).json({ user })
+    } catch (error) {
+      throw new Error(`${error.message}`)
+    }
+  }
 
   public async edit({}: HttpContextContract) {}
 
