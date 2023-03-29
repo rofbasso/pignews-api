@@ -6,6 +6,7 @@ interface UsersRepository {
   create(createUserDTO: CreateUserDTO): Promise<Users>
   findByPhone(phone: string): Promise<Users | null>
   findById(id: number): Promise<Users | null>
+  destroy(id: number): Promise<void>
 }
 
 export { UsersRepository }

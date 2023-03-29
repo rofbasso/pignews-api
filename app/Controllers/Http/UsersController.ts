@@ -47,5 +47,15 @@ export default class UsersController {
 
   public async update({}: HttpContextContract) {}
 
-  public async destroy({}: HttpContextContract) {}
+  public async destroy({ request, response }: HttpContextContract) {
+    try {
+      const { id } = request.params()
+
+      const user = await this.usersServices.destroy(id)
+
+      return response.status(202).json({ message: user })
+    } catch (error) {
+      throw new Error(`${error.message}`)
+    }
+  }
 }
