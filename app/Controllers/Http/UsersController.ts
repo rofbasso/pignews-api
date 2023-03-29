@@ -45,7 +45,18 @@ export default class UsersController {
 
   public async edit({}: HttpContextContract) {}
 
-  public async update({}: HttpContextContract) {}
+  public async update({ request, response }: HttpContextContract) {
+    try {
+      const { id } = request.params()
+      const { name, club, phone } = request.body()
+
+      const user = await this.usersServices.update({ id, name, club, phone })
+
+      return response.status(200).json({ user })
+    } catch (error) {
+      throw new Error(`${error.message}`)
+    }
+  }
 
   public async destroy({ request, response }: HttpContextContract) {
     try {

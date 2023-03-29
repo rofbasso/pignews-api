@@ -1,4 +1,4 @@
-import { CreateUserDTO } from 'App/DTO/UsersDTO'
+import { CreateUserDTO, UpdateUserDTO } from 'App/DTO/UsersDTO'
 import Users from 'App/Models/Users'
 import { UsersRepository } from './UsersRepository'
 
@@ -23,6 +23,12 @@ export default class UsersRepositoryImpl implements UsersRepository {
   public async findById(id: number): Promise<Users | null> {
     const user = await Users.findBy('id', id)
     return user
+  }
+
+  public async update(user: Users, updateUserDTO: UpdateUserDTO): Promise<Users> {
+    const returnUser = await user.merge(updateUserDTO).save()
+
+    return returnUser
   }
 
   public async destroy(id: number): Promise<void> {

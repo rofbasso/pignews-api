@@ -4,4 +4,11 @@ interface CreateUserDTO {
   club: string
 }
 
-export { CreateUserDTO }
+interface UpdateUserDTO {
+  id: number
+  name?: string
+  phone?: string
+  club?: string
+}
+
+export { CreateUserDTO, UpdateUserDTO }
